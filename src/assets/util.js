@@ -1,3 +1,4 @@
+const URL = 'https://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080';
 // UTILITY FUNCTIONS
 export const searchParams = obj =>
   Object.keys(obj).map((key) => {
@@ -11,7 +12,7 @@ export const sortTasks = tasks =>
 
 // API CALLS
 export const getTasks = userId =>
-  fetch(`http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/tasks/${userId}`, {
+  fetch(`${URL}/tasks/${userId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -19,7 +20,7 @@ export const getTasks = userId =>
   }).then(res => res.json());
 
 export const addTask = (taskObj, id) =>
-  fetch(`http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/tasks/new/${id}`, {
+  fetch(`${URL}/tasks/new/${id}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -28,12 +29,12 @@ export const addTask = (taskObj, id) =>
   });
 
 export const deleteTask = taskId =>
-  fetch(`http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/tasks/${taskId}/delete`, {
+  fetch(`${URL}/tasks/${taskId}/delete`, {
     method: 'GET'
   }).then(res => res.json());
 
 export const loginUser = userObj =>
-  fetch('http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/users/login', {
+  fetch(`${URL}/users/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -42,7 +43,7 @@ export const loginUser = userObj =>
   }).then(res => res.json());
 
 export const addUser = userObj =>
-  fetch('http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/users/new', {
+  fetch(`${URL}/users/new`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -51,7 +52,7 @@ export const addUser = userObj =>
   }).then(res => res.json());
 
 export const updateUser = (userObj, id) =>
-  fetch(`http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/users/${id}`, {
+  fetch(`${URL}/users/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
