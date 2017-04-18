@@ -11,7 +11,7 @@ export const sortTasks = tasks =>
 
 // API CALLS
 export const getTasks = userId =>
-  fetch(`http://localhost:8000/tasks/${userId}`, {
+  fetch(`http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/tasks/${userId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -19,7 +19,7 @@ export const getTasks = userId =>
   }).then(res => res.json());
 
 export const addTask = (taskObj, id) =>
-  fetch(`http://localhost:8000/tasks/new/${id}`, {
+  fetch(`http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/tasks/new/${id}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -28,12 +28,12 @@ export const addTask = (taskObj, id) =>
   });
 
 export const deleteTask = taskId =>
-  fetch(`http://localhost:8000/tasks/${taskId}/delete`, {
-    method: 'DELETE'
+  fetch(`http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/tasks/${taskId}/delete`, {
+    method: 'GET'
   }).then(res => res.json());
 
 export const loginUser = userObj =>
-  fetch('http://localhost:8000/users/login', {
+  fetch('http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/users/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -42,7 +42,7 @@ export const loginUser = userObj =>
   }).then(res => res.json());
 
 export const addUser = userObj =>
-  fetch('http://localhost:8000/users/new', {
+  fetch('http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/users/new', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -51,7 +51,7 @@ export const addUser = userObj =>
   }).then(res => res.json());
 
 export const updateUser = (userObj, id) =>
-  fetch(`http://localhost:8000/users/${id}`, {
+  fetch(`http://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080/users/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',

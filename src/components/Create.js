@@ -75,7 +75,7 @@ class Create extends Component {
               </Stepper>
               {finished
               ? (
-                <p>Task created!<t/>
+                <p>Task created! <t/>
                   <a
                     href="#"
                     onClick={(event) => {
