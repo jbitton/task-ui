@@ -9,8 +9,9 @@ export const Dashboard = tasks =>
         <div>
           <Card style={{ width: "50%", marginLeft: "auto", marginRight: "auto"}}>
             <AppBar showMenuIconButton={false} title={task.title}/>
-            <CardHeader title={task.subject} subtitle={task.dueDate}/>
-            <CardText>
+            <CardHeader title={task.subject} subtitle={task.dueDate.split('T')[0]} actAsExpander={true}
+                        showExpandableButton={true}/>
+            <CardText expandable={true}>
               <p className="description">{task.description}</p>
             </CardText>
             <CardActions>
