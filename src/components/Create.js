@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider, Card, CardHeader, CardText, Stepper, Step, StepLabel, FlatButton, RaisedButton, TextField } from 'material-ui';
+import * as utils from '../assets/util';
 import '../assets/App.css';
 import 'mootools';
 
@@ -21,20 +22,6 @@ class Create extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  addTask = () => {
-    const searchParams = Object.keys(this.state.task).map((key) => {
-      return encodeURIComponent(key) + '=' + encodeURIComponent(this.state.task[key]);
-    }).join('&');
-
-    fetch(`http://localhost:8000/tasks/new/${this.props.userId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      body: searchParams
-    });
-  };
-
   handleChange(type, val) {
     const task = Object.clone(this.state.task);
     task[type] = val;
@@ -43,18 +30,13 @@ class Create extends Component {
 
   handleNext = () => {
     const {stepIndex} = this.state;
-    if (this.state.stepIndex >= 3) { this.addTask(); }
-    this.setState({
-      stepIndex: stepIndex + 1,
-      finished: stepIndex >= 3,
-    });
+    if (this.state.stepIndex >= 3) { utils.addTask(this.state.task, this.props.userId); }
+    this.setState({ stepIndex: stepIndex + 1, finished: stepIndex >= 3 });
   };
 
   handlePrev = () => {
     const {stepIndex} = this.state;
-    if (stepIndex > 0) {
-      this.setState({stepIndex: stepIndex - 1});
-    }
+    if (stepIndex > 0) { this.setState({stepIndex: stepIndex - 1}); }
   };
 
   getStepContent(stepIndex) {
@@ -91,37 +73,30 @@ class Create extends Component {
                 <Step><StepLabel>Subject</StepLabel></Step>
                 <Step><StepLabel>Due Date</StepLabel></Step>
               </Stepper>
-              {finished ? (
-                  <p>
-                    Task created! <t/>
-                    <a
-                      href="#"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        this.setState({stepIndex: 0, finished: false});
-                      }}
-                    >
-                      Click here
-                    </a> to make another task!
-                  </p>
-                ) : (
-                  <div>
-                    {this.getStepContent(stepIndex)}<br/>
-                    <div style={{marginTop: 12}}>
-                      <FlatButton
-                        label="Back"
-                        disabled={stepIndex === 0}
-                        onTouchTap={this.handlePrev}
-                        style={{marginRight: 12}}
-                      />
-                      <RaisedButton
-                        label={stepIndex === 3 ? 'Finish' : 'Next'}
-                        primary={true}
-                        onTouchTap={this.handleNext}
-                      />
-                    </div>
+              {finished
+              ? (
+                <p>Task created!<t/>
+                  <a
+                    href="#"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      this.setState({stepIndex: 0, finished: false});
+                    }}
+                  >Click here</a> to make another task!</p>)
+              : (<div>
+                  {this.getStepContent(stepIndex)}<br/>
+                  <div style={{marginTop: 12}}>
+                    <FlatButton
+                      label="Back"
+                      disabled={stepIndex === 0}
+                      onTouchTap={this.handlePrev}
+                      style={{marginRight: 12}}/>
+                    <RaisedButton
+                      label={stepIndex === 3 ? 'Finish' : 'Next'}
+                      primary={true}
+                      onTouchTap={this.handleNext}/>
                   </div>
-                )}
+                </div>)}
             </CardText>
           </Card>
         </MuiThemeProvider>

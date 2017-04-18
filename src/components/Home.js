@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider, AppBar, Card, CardActions, CardText, TextField, RaisedButton, Dialog } from 'material-ui';
+import * as utils from '../assets/util';
 import 'mootools';
 
 export const Home = props => (
@@ -33,20 +34,6 @@ class SignUp extends Component {
     this.setState({ userInfo });
   }
 
-  handleSignUp() {
-    const searchParams = Object.keys(this.state.userInfo).map((key) => {
-      return encodeURIComponent(key) + '=' + encodeURIComponent(this.state.userInfo[key]);
-    }).join('&');
-
-    fetch('http://localhost:8000/users/new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      body: searchParams
-    }).then(json => this.setState({ open: true }));
-  }
-
   render() {
     return (
       <div>
@@ -60,7 +47,8 @@ class SignUp extends Component {
                      onChange={(e, val) => { this.handleChange("password", val)}}/><br/>
         </CardText>
         <CardActions>
-          <RaisedButton label="Sign up" primary={true} onTouchTap={() => this.handleSignUp()}/>
+          <RaisedButton label="Sign up" primary={true} onTouchTap={() => {utils.addUser(this.state.userInfo);
+                                                                          this.setState({ open: true });}}/>
         </CardActions><br/>
         <CardText>
           <p>Have an account? <a href="/#/">Click here!</a></p>
@@ -82,6 +70,7 @@ class LogIn extends Component {
         userName: "",
         password: "",
       },
+      open: false
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -95,19 +84,12 @@ class LogIn extends Component {
   }
 
   async handleLogIn() {
-    const searchParams = Object.keys(this.state.userInfo).map((key) => {
-      return encodeURIComponent(key) + '=' + encodeURIComponent(this.state.userInfo[key]);
-    }).join('&');
-
-    const body = await fetch('http://localhost:8000/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      body: searchParams
-    }).then(res => res.json());
-
-    this.props.history.push(`/dashboard/${body._id}`);
+    const body = await utils.loginUser(this.state.userInfo);
+    if (body._id === undefined) {
+      this.setState({ open: true });
+    } else {
+      this.props.history.push(`/dashboard/${body._id}`);
+    }
   }
 
   render() {
@@ -126,6 +108,10 @@ class LogIn extends Component {
         <CardText>
           <p>Don't have an account? <a href="/#/signup">Click here!</a></p>
         </CardText><br/>
+        <Dialog title="Invalid Login" modal={false} open={this.state.open}
+                onRequestClose={() => { this.setState({ open: false })}}>
+          Please double-check your entries and try again
+        </Dialog>
       </div>
     );
   }

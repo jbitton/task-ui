@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider, AppBar, Card, CardActions, CardText, TextField, RaisedButton, Dialog } from 'material-ui';
+import * as utils from '../assets/util';
 import 'mootools';
 
 class Settings extends Component {
@@ -12,16 +13,6 @@ class Settings extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  async componentDidMount() {
-    const userInfo = await fetch(`http://localhost:8000/users/${this.props.userId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      }
-    }).then(res => res.json());
-    this.setState({ userInfo });
-  }
-
   handleChange(type, val) {
     if (val.replace(" ", '').length !== 0) {
       const userInfo = Object.clone(this.state.userInfo);
@@ -30,18 +21,9 @@ class Settings extends Component {
     }
   }
 
-  handleSettings() {
-    const searchParams = Object.keys(this.state.userInfo).map((key) => {
-      return encodeURIComponent(key) + '=' + encodeURIComponent(this.state.userInfo[key]);
-    }).join('&');
-
-    fetch(`http://localhost:8000/users/${this.props.userId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      body: searchParams
-    }).then(json => this.setState({ open: true }));
+  async handleSettings() {
+    const updatedSettings = await utils.updateUser(this.state.userInfo, this.props.userId);
+    this.setState({ open: true, userInfo: updatedSettings });
   }
 
   render() {
