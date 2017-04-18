@@ -1,4 +1,4 @@
-const URL = 'https://ec2-52-25-60-252.us-west-2.compute.amazonaws.com:8080';
+const URL = 'https://to-day-api.herokuapp.com';
 // UTILITY FUNCTIONS
 export const searchParams = obj =>
   Object.keys(obj).map((key) => {
