@@ -87,9 +87,11 @@ class LogIn extends Component {
   }
 
   handleChange(type, val) {
-    const userInfo = Object.clone(this.state.userInfo);
-    userInfo[type] = val;
-    this.setState({ userInfo });
+    if (val.length !== 0) {
+      const userInfo = Object.clone(this.state.userInfo);
+      userInfo[type] = val;
+      this.setState({ userInfo });
+    }
   }
 
   async handleLogIn() {
@@ -105,7 +107,7 @@ class LogIn extends Component {
       body: searchParams
     }).then(res => res.json());
 
-    this.props.history.push(`/create/${body._id}`);
+    this.props.history.push(`/dashboard/${body._id}`);
   }
 
   render() {

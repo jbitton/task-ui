@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider, Card, CardHeader, CardText, Stepper, Step, StepLabel, FlatButton, RaisedButton, TextField } from 'material-ui';
-import { SideNav } from './SideNav'
 import '../assets/App.css';
 import 'mootools';
-
-export const CreateView = props => (
-    <div>
-      <SideNav {...props.props}/>
-      <div className="wrapper">
-        <br/>
-        <Create userId={props.props.userId}/>
-      </div>
-    </div>
-  );
 
 class Create extends Component {
   constructor(props) {
@@ -140,3 +129,5 @@ class Create extends Component {
     );
   }
 }
+
+export default Create;

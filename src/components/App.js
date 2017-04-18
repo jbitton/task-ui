@@ -1,36 +1,45 @@
 import React, { Component } from 'react';
-import { CreateView } from './Create';
-import { DashboardView } from './Dashboard';
+import Create from './Create';
+import { Dashboard } from './Dashboard';
+import { SideNav } from './SideNav';
 import Settings from './Settings';
+import * as utils from '../assets/util';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: []
+      tasks: [],
+      userId: this.props.userId
     }
   }
 
   async componentDidMount() {
-    const tasks = await fetch(`http://localhost:8000/tasks/${this.props.userId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      }
-    }).then(res => res.json());
+    const tasks = await utils.getTasks(this.state.userId);
     this.setState({ tasks });
+  }
+
+  async componentWillReceiveProps(newProps) {
+    if (this.props.view !== newProps.view) {
+      const tasks = await utils.getTasks(this.state.userId);
+      this.setState({ tasks });
+    }
   }
 
   render() {
     return (
       <div>
-        {this.props.view === "dashboard"
-          ? <DashboardView tasks={this.state.tasks} props={this.props}/>
-          : this.props.view === "create"
-            ? <CreateView props={this.props}/>
-            : this.props.view === "settings"
-              ? <Settings props={this.props}/>
-              : this.props.history.push("/")}
+        <SideNav history={this.props.history} userId={this.state.userId}/>
+        <div className="wrapper">
+          <br/>
+          {this.props.view === "dashboard"
+            ? Dashboard(this.state.tasks)
+            : this.props.view === "create"
+              ? <Create userId={this.state.userId}/>
+              : this.props.view === "settings"
+                ? <Settings userId={this.state.userId}/>
+                : this.props.history.push("/")}
+        </div>
       </div>
     );
   }
