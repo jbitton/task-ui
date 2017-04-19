@@ -30,7 +30,7 @@ export const addTask = (taskObj, id) =>
 
 export const deleteTask = taskId =>
   fetch(`${URL}/tasks/${taskId}/delete`, {
-    method: 'GET'
+    method: 'DELETE'
   }).then(res => res.json());
 
 export const loginUser = userObj =>
